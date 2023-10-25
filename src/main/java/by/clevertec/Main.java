@@ -190,7 +190,8 @@ public class Main {
   }
 
   private static int getEmptyPlacesFirstWave(List<Person> personsFromHospital) {
-    return 500 - personsFromHospital.size();
+    int size = 500 - personsFromHospital.size();
+    return Math.max(size, 0);
   }
 
   public static void task14() {
