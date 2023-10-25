@@ -7,6 +7,7 @@ import by.clevertec.model.Flower;
 import by.clevertec.model.House;
 import by.clevertec.model.Person;
 import by.clevertec.model.Student;
+import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class Main {
 
   public static final String FEMALE = "Female";
+  public static final String MALE = "Male";
 
   public static void main(String[] args) {
     //    task1();
@@ -28,8 +30,8 @@ public class Main {
     //    task8();
     //    task9();
     //    task10();
-    task11();
-    task12();
+    //    task11();
+//    task12();
     task13();
     task14();
     task15();
@@ -95,8 +97,7 @@ public class Main {
     System.out.println(
         animals.stream()
             .anyMatch(
-                animal ->
-                    !animal.getGender().equals("Male") && !animal.getGender().equals(FEMALE)));
+                animal -> !animal.getGender().equals(MALE) && !animal.getGender().equals(FEMALE)));
   }
 
   public static void task7() {
@@ -140,7 +141,15 @@ public class Main {
 
   public static void task12() {
     List<Person> persons = Util.getPersons();
-    //        persons.stream() Продолжить ...
+    persons.stream()
+        .filter(person -> person.getGender().equals(MALE))
+        .filter(
+            person ->
+                TimeUtil.getYearsBetweenDateAndNow(person.getDateOfBirth()) > 18
+                    && TimeUtil.getYearsBetweenDateAndNow(person.getDateOfBirth()) < 27)
+        .sorted(Comparator.comparingInt(Person::getRecruitmentGroup))
+        .limit(200)
+        .forEach(System.out::println);
   }
 
   public static void task13() {
