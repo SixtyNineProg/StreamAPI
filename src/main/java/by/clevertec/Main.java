@@ -18,8 +18,8 @@ public class Main {
   public static void main(String[] args) {
     //    task1();
     //    task2();
-//    task3();
-    task4();
+    //    task3();
+    //    task4();
     task5();
     task6();
     task7();
@@ -82,7 +82,10 @@ public class Main {
 
   public static void task5() {
     List<Animal> animals = Util.getAnimals();
-    //        animals.stream() Продолжить ...
+    System.out.println(
+        animals.stream()
+            .filter(animal -> animal.getAge() >= 20 && animal.getAge() <= 30)
+            .anyMatch(animal -> animal.getOrigin().equals("Hungarian")));
   }
 
   public static void task6() {
