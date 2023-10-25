@@ -17,7 +17,7 @@ public class Main {
 
   public static void main(String[] args) {
     //    task1();
-    task2();
+//    task2();
     task3();
     task4();
     task5();
@@ -66,7 +66,12 @@ public class Main {
 
   public static void task3() {
     List<Animal> animals = Util.getAnimals();
-    //        animals.stream() Продолжить ...
+    animals.stream()
+        .filter(animal -> animal.getAge() > 30)
+        .map(Animal::getOrigin)
+        .distinct()
+        .filter(origin -> origin.startsWith("A"))
+        .forEach(System.out::println);
   }
 
   public static void task4() {
