@@ -21,7 +21,8 @@ public class Util {
     private static final String FLOWERS_DATA_FILE = "src/main/resources/json/flowers.json";
     private static final String STUDENTS_DATA_FILE = "src/main/resources/json/students.json";
     private static final String EXAMINATION_DATA_FILE = "src/main/resources/json/examinations.json";
-    private static final String BUILDING_TYPE_HOSPITAL = "Hospital";
+    //Private access for constant? ;)
+    public static final String BUILDING_TYPE_HOSPITAL = "Hospital";
     private static final String BUILDING_TYPE_OTHER = "Civil building";
 
     private static final Reader reader = new JsonReader();

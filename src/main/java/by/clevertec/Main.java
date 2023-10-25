@@ -1,5 +1,7 @@
 package by.clevertec;
 
+import static by.clevertec.util.Util.BUILDING_TYPE_HOSPITAL;
+
 import by.clevertec.model.Animal;
 import by.clevertec.model.Car;
 import by.clevertec.model.Examination;
@@ -9,6 +11,9 @@ import by.clevertec.model.Person;
 import by.clevertec.model.Student;
 import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,7 +36,7 @@ public class Main {
     //    task9();
     //    task10();
     //    task11();
-//    task12();
+    //    task12();
     task13();
     task14();
     task15();
@@ -154,7 +159,38 @@ public class Main {
 
   public static void task13() {
     List<House> houses = Util.getHouses();
-    //        houses.stream() Продолжить ...
+    List<Person> personsFromHospital =
+        houses.stream()
+            .filter(house -> house.getBuildingType().equals(BUILDING_TYPE_HOSPITAL))
+            .map(House::getPersonList)
+            .flatMap(Collection::stream)
+            .toList();
+    List<Person> childrenAndOldMen =
+        houses.stream()
+            .filter(house -> !house.getBuildingType().equals(BUILDING_TYPE_HOSPITAL))
+            .map(House::getPersonList)
+            .flatMap(Collection::stream)
+            .sorted(
+                (person1, person2) -> {
+                  if ((person1.getAge() < 18 && person1.getAge() > 65)
+                      && (person2.getAge() > 18 && person2.getAge() < 65)) {
+                    return -1;
+                  } else if ((person2.getAge() < 18 && person2.getAge() > 65)
+                      && (person1.getAge() > 18 && person1.getAge() < 65)) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
+            .limit(getEmptyPlacesFirstWave(personsFromHospital))
+            .toList();
+    List<Person> firstWave = new ArrayList<>(personsFromHospital);
+    firstWave.addAll(childrenAndOldMen);
+    System.out.println(firstWave.size());
+  }
+
+  private static int getEmptyPlacesFirstWave(List<Person> personsFromHospital) {
+    return 500 - personsFromHospital.size();
   }
 
   public static void task14() {
