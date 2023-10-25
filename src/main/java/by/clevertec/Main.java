@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 public class Main {
 
+  public static final String FEMALE = "Female";
+
   public static void main(String[] args) {
     //    task1();
     //    task2();
@@ -22,9 +24,9 @@ public class Main {
     //    task4();
     //    task5();
     //    task6();
-//    task7();
-    task8();
-    task9();
+    //    task7();
+    //    task8();
+//    task9();
     task10();
     task11();
     task12();
@@ -57,7 +59,7 @@ public class Main {
         .filter(animal -> animal.getOrigin().equals("Japanese"))
         .forEach(
             animal -> {
-              if (animal.getGender().equals("Female")) {
+              if (animal.getGender().equals(FEMALE)) {
                 animal.setBread(animal.getBread().toUpperCase());
               }
               System.out.println(animal);
@@ -77,7 +79,7 @@ public class Main {
   public static void task4() {
     List<Animal> animals = Util.getAnimals();
     System.out.println(
-        animals.stream().filter(animal -> animal.getGender().equals("Female")).count());
+        animals.stream().filter(animal -> animal.getGender().equals(FEMALE)).count());
   }
 
   public static void task5() {
@@ -94,7 +96,7 @@ public class Main {
         animals.stream()
             .anyMatch(
                 animal ->
-                    !animal.getGender().equals("Male") && !animal.getGender().equals("Female")));
+                    !animal.getGender().equals("Male") && !animal.getGender().equals(FEMALE)));
   }
 
   public static void task7() {
@@ -112,7 +114,12 @@ public class Main {
 
   public static void task9() {
     List<Animal> animals = Util.getAnimals();
-    //        animals.stream() Продолжить ...
+    System.out.println(
+        animals.stream()
+            .map(animal -> animal.getBread().toCharArray())
+            .min(Comparator.comparingInt(arr -> arr.length))
+            .map(arr -> arr.length)
+            .orElse(0));
   }
 
   public static void task10() {
