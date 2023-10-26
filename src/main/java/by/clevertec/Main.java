@@ -14,6 +14,7 @@ import by.clevertec.util.Util;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,8 +41,8 @@ public class Main {
     task14();
     task15();
     //    task16();
-    task17();
-    task18();
+    //    task17();
+    //    task18();
     task19();
     task20();
     task21();
@@ -224,8 +225,18 @@ public class Main {
 
   public static void task18() {
     List<Student> students = Util.getStudents();
-    List<Examination> examinations = Util.getExaminations();
-    //        students.stream() Продолжить ...
+    Map<String, List<Student>> faculties =
+        students.stream().collect(Collectors.groupingBy(Student::getFaculty));
+    faculties.entrySet().stream()
+        .map(
+            e ->
+                Map.entry(
+                    e.getKey(),
+                    e.getValue().stream()
+                        .map(Student::getAge)
+                        .mapToInt(Integer::intValue)
+                        .average()))
+        .forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue().orElse(0)));
   }
 
   public static void task19() {
@@ -235,6 +246,7 @@ public class Main {
 
   public static void task20() {
     List<Student> students = Util.getStudents();
+    List<Examination> examinations = Util.getExaminations();
     //        students.stream() Продолжить ...
   }
 
