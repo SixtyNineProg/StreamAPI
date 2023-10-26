@@ -36,7 +36,7 @@ public class Main {
     //    task10();
     //    task11();
     //    task12();
-    task13();
+//    task13();
     task14();
     task15();
     task16();
@@ -211,7 +211,10 @@ public class Main {
 
   public static void task16() {
     List<Student> students = Util.getStudents();
-    //        students.stream() Продолжить ...
+    students.stream()
+        .filter(student -> student.getAge() < 18)
+        .sorted(Comparator.comparing(Student::getSurname))
+        .forEach(System.out::println);
   }
 
   public static void task17() {
