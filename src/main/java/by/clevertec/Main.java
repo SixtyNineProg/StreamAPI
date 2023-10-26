@@ -49,7 +49,7 @@ public class Main {
     //    task19();
     //    task20();
     //    task21();
-    task22();
+    //    task22();
   }
 
   public static void task1() {
@@ -195,7 +195,36 @@ public class Main {
 
   public static void task15() {
     List<Flower> flowers = Util.getFlowers();
-    //        flowers.stream() Продолжить ...
+
+    Comparator<Flower> byOrigin = Comparator.comparing(Flower::getOrigin).reversed();
+    Comparator<Flower> byPrice = Comparator.comparing(Flower::getPrice).reversed();
+    Comparator<Flower> byWaterConsumption =
+        Comparator.comparing(Flower::getWaterConsumptionPerDay).reversed();
+
+    System.out.println(
+        flowers.stream()
+            .sorted(byOrigin.thenComparing(byPrice).thenComparing(byWaterConsumption))
+            .filter(
+                flower ->
+                    flower.getCommonName().startsWith("S")
+                        || flower.getCommonName().startsWith("T")
+                        || flower.getCommonName().startsWith("U")
+                        || flower.getCommonName().startsWith("V")
+                        || flower.getCommonName().startsWith("W")
+                        || flower.getCommonName().startsWith("X")
+                        || flower.getCommonName().startsWith("Y")
+                        || flower.getCommonName().startsWith("Z")
+                        || flower.getCommonName().startsWith("A")
+                        || flower.getCommonName().startsWith("B")
+                        || flower.getCommonName().startsWith("C")
+                            && flower.isShadePreferred()
+                            && flower.getFlowerVaseMaterial().contains("Glass")
+                            && flower.getFlowerVaseMaterial().contains("Aluminum")
+                            && flower.getFlowerVaseMaterial().contains("Steel"))
+            .map(
+                flower -> flower.getPrice() + (5 * 365 * flower.getWaterConsumptionPerDay() * 1.39))
+            .mapToDouble(Double::doubleValue)
+            .sum());
   }
 
   public static void task16() {
