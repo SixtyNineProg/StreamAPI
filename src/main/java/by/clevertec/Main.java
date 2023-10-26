@@ -5,10 +5,12 @@ import static by.clevertec.util.Util.BUILDING_TYPE_HOSPITAL;
 import by.clevertec.model.Animal;
 import by.clevertec.model.Car;
 import by.clevertec.model.Examination;
+import by.clevertec.model.ExaminationEntity;
 import by.clevertec.model.Flower;
 import by.clevertec.model.House;
 import by.clevertec.model.Person;
 import by.clevertec.model.Student;
+import by.clevertec.util.Mapper;
 import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
 import java.util.Collection;
@@ -170,30 +172,15 @@ public class Main {
             .filter(house -> !house.getBuildingType().equals(BUILDING_TYPE_HOSPITAL))
             .map(House::getPersonList)
             .flatMap(Collection::stream)
-            .sorted((person1, person2) -> comparePersonsAge(person1.getAge(), person2.getAge()))
+            .sorted(
+                (person1, person2) ->
+                    by.clevertec.util.Comparator.comparePersonsAge(
+                        person1.getAge(), person2.getAge()))
             .limit(getEmptyPlacesFirstWave(personsFromHospital))
             .toList();
-    List<Person> firstWave =
-        Stream.of(personsFromHospital, childrenAndOldMen)
-            .flatMap(Collection::stream)
-            .peek(System.out::println)
-            .toList();
-  }
-
-  private static int comparePersonsAge(int personAge1, int personAge2) {
-    boolean isPerson1childrenOrOldMen = isChildrenOrOldMen(personAge1);
-    boolean isPerson2childrenOrOldMen = isChildrenOrOldMen(personAge2);
-    if (isPerson1childrenOrOldMen && !isPerson2childrenOrOldMen) {
-      return -1;
-    } else if (isPerson2childrenOrOldMen && !isPerson1childrenOrOldMen) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-
-  private static boolean isChildrenOrOldMen(int personAge1) {
-    return personAge1 < 18 || personAge1 > 65;
+    Stream.of(personsFromHospital, childrenAndOldMen)
+        .flatMap(Collection::stream)
+        .forEach(System.out::println);
   }
 
   private static int getEmptyPlacesFirstWave(List<Person> personsFromHospital) {
@@ -239,7 +226,13 @@ public class Main {
 
   public static void task19() {
     List<Student> students = Util.getStudents();
-    //        students.stream() Продолжить ...
+    List<Examination> examinations = Util.getExaminations();
+    examinations.stream()
+        .map(
+            examination -> Mapper.mapExaminationsStudentsToExaminationEntity(examination, students))
+        .filter(examinationEntity -> examinationEntity.getExam3() > 4)
+        .map(ExaminationEntity::getStudent)
+        .forEach(System.out::println);
   }
 
   public static void task20() {
