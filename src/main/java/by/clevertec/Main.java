@@ -28,28 +28,28 @@ public class Main {
   public static final String MALE = "Male";
 
   public static void main(String[] args) {
-    //    task1();
-    //    task2();
-    //    task3();
-    //    task4();
-    //    task5();
-    //    task6();
-    //    task7();
-    //    task8();
-    //    task9();
-    //    task10();
-    //    task11();
-    //    task12();
-    //    task13();
+    task1();
+    task2();
+    task3();
+    task4();
+    task5();
+    task6();
+    task7();
+    task8();
+    task9();
+    task10();
+    task11();
+    task12();
+    task13();
     task14();
     task15();
-    //    task16();
-    //    task17();
-    //    task18();
-    //    task19();
-    //    task20();
-    //    task21();
-    //    task22();
+    task16();
+    task17();
+    task18();
+    task19();
+    task20();
+    task21();
+    task22();
   }
 
   public static void task1() {
@@ -190,7 +190,50 @@ public class Main {
 
   public static void task14() {
     List<Car> cars = Util.getCars();
-    //        cars.stream() Продолжить ...
+    System.out.println(
+        cars.stream()
+            .map(
+                car -> {
+                  int key = 1;
+                  if ("Jaguar".equals(car.getCarMake()) || "White".equals(car.getColor())) {
+                    key = 1;
+                  } else if (car.getMass() < 1500
+                      && ("BMW".equals(car.getCarMake())
+                          || "Lexus".equals(car.getCarMake())
+                          || "Chrysler".equals(car.getCarMake())
+                          || "Toyota".equals(car.getCarMake()))) {
+                    key = 2;
+                  } else if (("Black".equals(car.getColor()) && car.getMass() > 4000)
+                      || "GMC".equals(car.getCarMake())
+                      || "Chrysler".equals(car.getCarMake())
+                      || "Dodge".equals(car.getCarMake())) {
+                    key = 3;
+                  } else if (car.getReleaseYear() < 1982
+                      || "Civic".equals(car.getCarMake())
+                      || "Cherokee".equals(car.getCarMake())) {
+                    key = 4;
+                  } else if (!"Yellow".equals(car.getColor())
+                          && !"Red".equals(car.getColor())
+                          && !"Green".equals(car.getColor())
+                          && !"Blue".equals(car.getColor())
+                      || car.getPrice() > 40000) {
+                    key = 5;
+                  } else if (car.getVin().contains("59")) {
+                    key = 6;
+                  }
+                  return Map.entry(key, car);
+                })
+            .filter(entry -> entry.getKey() > 0)
+            .collect(
+                Collectors.groupingBy(
+                    Map.Entry::getKey,
+                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())))
+            .values()
+            .stream()
+            .map(value -> value.stream().mapToDouble(Car::getMass).sum() * 7.14 / 1000)
+            .peek(System.out::println)
+            .mapToDouble(price -> price)
+            .sum());
   }
 
   public static void task15() {
