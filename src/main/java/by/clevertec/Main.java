@@ -11,12 +11,12 @@ import by.clevertec.model.Person;
 import by.clevertec.model.Student;
 import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -172,9 +172,11 @@ public class Main {
             .sorted((person1, person2) -> comparePersonsAge(person1.getAge(), person2.getAge()))
             .limit(getEmptyPlacesFirstWave(personsFromHospital))
             .toList();
-    List<Person> firstWave = new ArrayList<>(personsFromHospital);
-    firstWave.addAll(childrenAndOldMen);
-    System.out.println(firstWave.size());
+    List<Person> firstWave =
+        Stream.of(personsFromHospital, childrenAndOldMen)
+            .flatMap(Collection::stream)
+            .peek(System.out::println)
+            .toList();
   }
 
   private static int comparePersonsAge(int personAge1, int personAge2) {
