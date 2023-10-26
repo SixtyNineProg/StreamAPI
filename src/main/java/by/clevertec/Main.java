@@ -225,9 +225,7 @@ public class Main {
 
   public static void task18() {
     List<Student> students = Util.getStudents();
-    Map<String, List<Student>> faculties =
-        students.stream().collect(Collectors.groupingBy(Student::getFaculty));
-    faculties.entrySet().stream()
+    students.stream().collect(Collectors.groupingBy(Student::getFaculty)).entrySet().stream()
         .map(
             e ->
                 Map.entry(
