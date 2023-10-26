@@ -45,9 +45,9 @@ public class Main {
     //    task16();
     //    task17();
     //    task18();
-    task19();
-    task20();
-    task21();
+    //    task19();
+    //    task20();
+    //    task21();
     task22();
   }
 
@@ -238,12 +238,39 @@ public class Main {
   public static void task20() {
     List<Student> students = Util.getStudents();
     List<Examination> examinations = Util.getExaminations();
-    //        students.stream() Продолжить ...
+    Map<String, List<ExaminationEntity>> mapFacultyExaminationEntities =
+        examinations.stream()
+            .map(
+                examination ->
+                    Mapper.mapExaminationsStudentsToExaminationEntity(examination, students))
+            .collect(
+                Collectors.groupingBy(
+                    examinationEntity -> examinationEntity.getStudent().getFaculty()));
+    Map<String, Double> mapFacultyAverageExam1 =
+        mapFacultyExaminationEntities.entrySet().stream()
+            .map(
+                entity ->
+                    Map.entry(
+                        entity.getKey(),
+                        entity.getValue().stream()
+                            .map(ExaminationEntity::getExam1)
+                            .mapToInt(Integer::intValue)
+                            .average()
+                            .orElse(0)))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    System.out.println(
+        mapFacultyAverageExam1.entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .orElse(Map.entry("Gryffindor", 0.0)));
   }
 
   public static void task21() {
     List<Student> students = Util.getStudents();
-    //        students.stream() Продолжить ...
+    students.stream()
+        .collect(Collectors.groupingBy(Student::getGroup, Collectors.counting()))
+        .entrySet()
+        .stream()
+        .forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue()));
   }
 
   public static void task22() {
