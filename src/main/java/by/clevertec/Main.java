@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -249,10 +250,10 @@ public class Main {
     Map<String, Double> mapFacultyAverageExam1 =
         mapFacultyExaminationEntities.entrySet().stream()
             .map(
-                entity ->
+                entry ->
                     Map.entry(
-                        entity.getKey(),
-                        entity.getValue().stream()
+                        entry.getKey(),
+                        entry.getValue().stream()
                             .map(ExaminationEntity::getExam1)
                             .mapToInt(Integer::intValue)
                             .average()
@@ -261,20 +262,29 @@ public class Main {
     System.out.println(
         mapFacultyAverageExam1.entrySet().stream()
             .max(Map.Entry.comparingByValue())
-            .orElse(Map.entry("Gryffindor", 0.0)));
+            .orElse(Map.entry("Gryffindor", 10.0)));
   }
 
   public static void task21() {
     List<Student> students = Util.getStudents();
     students.stream()
         .collect(Collectors.groupingBy(Student::getGroup, Collectors.counting()))
-        .entrySet()
-        .stream()
-        .forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue()));
+        .forEach((key, value) -> System.out.println(key + "\t" + value));
   }
 
   public static void task22() {
     List<Student> students = Util.getStudents();
-    //        students.stream() Продолжить ...
+    Map<String, Optional<Student>> mapFacultyStudentWithMinAge =
+        students.stream()
+            .collect(
+                Collectors.groupingBy(
+                    Student::getFaculty,
+                    Collectors.minBy(Comparator.comparingInt(Student::getAge))));
+    mapFacultyStudentWithMinAge.entrySet().stream()
+        .map(
+            entry ->
+                Map.entry(
+                    entry.getKey(), entry.getValue().orElse(Student.builder().build()).getAge()))
+        .forEach(e -> System.out.println(e.getKey() + "\t" + e.getValue()));
   }
 }
