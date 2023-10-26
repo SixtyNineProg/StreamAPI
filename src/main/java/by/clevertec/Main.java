@@ -11,7 +11,6 @@ import by.clevertec.model.Person;
 import by.clevertec.model.Student;
 import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -170,18 +169,7 @@ public class Main {
             .filter(house -> !house.getBuildingType().equals(BUILDING_TYPE_HOSPITAL))
             .map(House::getPersonList)
             .flatMap(Collection::stream)
-            .sorted(
-                (person1, person2) -> {
-                  if ((person1.getAge() < 18 && person1.getAge() > 65)
-                      && (person2.getAge() > 18 && person2.getAge() < 65)) {
-                    return -1;
-                  } else if ((person2.getAge() < 18 && person2.getAge() > 65)
-                      && (person1.getAge() > 18 && person1.getAge() < 65)) {
-                    return 1;
-                  } else {
-                    return 0;
-                  }
-                })
+            .sorted((person1, person2) -> comparePersonsAge(person1.getAge(), person2.getAge()))
             .limit(getEmptyPlacesFirstWave(personsFromHospital))
             .toList();
     List<Person> firstWave = new ArrayList<>(personsFromHospital);
@@ -189,9 +177,24 @@ public class Main {
     System.out.println(firstWave.size());
   }
 
+  private static int comparePersonsAge(int personAge1, int personAge2) {
+    boolean isPerson1childrenOrOldMen = isChildrenOrOldMen(personAge1);
+    boolean isPerson2childrenOrOldMen = isChildrenOrOldMen(personAge2);
+    if (isPerson1childrenOrOldMen && !isPerson2childrenOrOldMen) {
+      return -1;
+    } else if (isPerson2childrenOrOldMen && !isPerson1childrenOrOldMen) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  private static boolean isChildrenOrOldMen(int personAge1) {
+    return personAge1 < 18 || personAge1 > 65;
+  }
+
   private static int getEmptyPlacesFirstWave(List<Person> personsFromHospital) {
-    int size = 500 - personsFromHospital.size();
-    return Math.max(size, 0);
+    return Math.max(500 - personsFromHospital.size(), 0);
   }
 
   public static void task14() {
