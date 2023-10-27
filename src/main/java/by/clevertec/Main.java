@@ -13,6 +13,7 @@ import by.clevertec.model.Student;
 import by.clevertec.util.Mapper;
 import by.clevertec.util.TimeUtil;
 import by.clevertec.util.Util;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -50,6 +51,35 @@ public class Main {
     task20();
     task21();
     task22();
+    task23();
+  }
+
+  private static void task23() {
+    List<Integer> integerList = Arrays.asList(1, 3, 4, 5, 6, 8, 7, 3, 2);
+    System.out.println(integerList.stream().mapToInt(Integer::intValue).average().orElse(0));
+    List<String> colors = Arrays.asList("RED", "grEEn", "white", "Orange", "pink");
+    colors = colors.stream().map(String::toUpperCase).toList();
+    System.out.println(colors);
+    colors = colors.stream().map(String::toLowerCase).toList();
+    System.out.println(colors);
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    System.out.println(
+        numbers.stream().filter(number -> number % 2 == 0).mapToInt(Integer::intValue).sum());
+    System.out.println(
+        numbers.stream().filter(number -> number % 2 != 0).mapToInt(Integer::intValue).sum());
+    List<Integer> nums = Arrays.asList(10, 23, 22, 23, 24, 24, 33, 15, 26, 15);
+    nums = nums.stream().distinct().toList();
+    System.out.println(nums);
+    List<String> colors5 = Arrays.asList("Red", "Green", "Blue", "Pink", "Brown");
+    char startingLetter = 'B';
+    System.out.println(colors5.stream().filter(color -> color.charAt(0) == startingLetter).count());
+    System.out.println(colors5.stream().sorted().toList());
+    System.out.println(colors5.stream().sorted(Comparator.reverseOrder()).toList());
+    System.out.println(integerList.stream().max(Integer::compareTo).orElse(0));
+    System.out.println(integerList.stream().min(Integer::compareTo).orElse(0));
+    System.out.println(integerList.stream().sorted().skip(1).findFirst().orElse(0));
+    System.out.println(
+        integerList.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().orElse(0));
   }
 
   public static void task1() {
